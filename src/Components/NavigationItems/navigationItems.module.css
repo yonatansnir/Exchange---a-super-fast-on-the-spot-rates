@@ -1,0 +1,19 @@
+.nav {
+    margin-right: 2em;
+    display: flex;
+    flex-direction: row;
+}
+
+.ul {
+    display: flex;
+    flex-direction: row;
+}
+
+.ul li {
+    margin-right: 1.5em;
+}
+
+.ul li a {
+    color: #000;
+
+}

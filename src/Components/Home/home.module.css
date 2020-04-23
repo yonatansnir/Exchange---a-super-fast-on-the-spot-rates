@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:400,700,900,900i&display=swap');
+
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+
+.wholeThing {
+	display: grid;
+	grid-template-areas: 'app brand'
+						'footer footer';
+	height: 100vh;
+}
+
+.main {
+	grid-area: app;
+	text-align: center;
+	margin-top: 4em;
+}
+
+.right {
+	grid-area: brand;
+	border-left: 5px solid;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-image: url('../../images/cash.png');
+	background-size: cover;
+	background-position-x: -12.5em;
+	background-position-y: 2em;
+}
+
+
+.goLeft {
+	transition: all 1250ms ease-in-out;
+	transform: translateX(0);
+	border-right: 3px solid black;
+	background-image: url('../../images/cash.png');
+	background-size: cover;
+	background-position-x: -12.5em;
+	background-position-y: 2em;
+}
+
+.goRight {
+	transition: all 1250ms ease-in-out;
+	transform: translateX(5%);
+
+}
+
+.rightText {
+	font-size: 6em;
+}
+
+.Date {
+	font-size: 1.5em;
+	color: white;
+	text-align: center;
+	background-color: black;
+	padding: 1em;
+	border-radius: 12px;
+
+}
+
+.inputAmount {
+	border: none;
+	margin-top: 3em;
+	box-shadow: inset 8px 8px 8px #d9d9d9,
+				inset -8px -8px 8px #ffffff;
+	padding: 0.5em;
+	border-radius: 1em;
+}
+
+.inputAmount:focus {
+	outline:none;
+}
+
+.form {
+	margin: 2.5em 8em;
+	padding: 2em;
+	border-radius: 50px;
+	background: #ffffff;
+	box-shadow: 20px 20px 60px #d9d9d9, 
+			   -20px -20px 60px #ffffff;
+}
+
+.Second, .Third, .Fourth {
+	margin: 2.5em auto;
+}
+
+select {
+	/* background: rgb(255,40,0); */
+	padding: 1em;
+	width: 50%;
+	border-radius: 2em;
+	cursor: pointer;
+	outline: none;
+
+}
+
+
+
+footer {
+	background: black;
+	width: 100%;
+	grid-area: footer;
+	padding: 1em;
+	color: white;
+	text-align: center;
+}
+
+@media (max-width: 600px) {
+	.wholeThing {
+		display: grid;
+		grid-template-areas: 'app'
+							'footer';
+	}
+
+	.right {
+		display: none;
+	}
+}
