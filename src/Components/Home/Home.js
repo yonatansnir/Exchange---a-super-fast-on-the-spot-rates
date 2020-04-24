@@ -32,7 +32,7 @@ class Home extends Component {
 				console.log(err);
 			});
 	}
-	// EUR = 1, NIS = 3, USD = 2
+	
 	handleChange = (e) => {
 		this.setState({ [e.target.name]: e.target.value }, () => {
 			let { rates, amount, from, to } = this.state;
