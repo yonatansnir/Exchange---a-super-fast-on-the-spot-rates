@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './home.module.css';
+import RightImg from './RightImg';
 
 class Home extends Component {
 	state = {
+		coinsType: [],
 		rates: '',
 		amount: '',
-		from: '',
-		to: '',
+		from: "EUR",
+		to: "EUR",
 		output: '0',
 		outputShow: false,
 	};
@@ -22,93 +24,30 @@ class Home extends Component {
 		axios
 			.get('/')
 			.then((response) => {
-				console.log(response.data.rates);
-				this.setState({ date: response.data.date, rates: response.data.rates });
+				let ct = [response.data.base, ...Object.keys(response.data.rates)]
+				let r = { ...response.data.rates, EUR: 1 }
+				this.setState({ coinsType: ct , date: response.data.date, rates: r });
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	}
-
-
+	// EUR = 1, NIS = 3, USD = 2
 	handleChange = (e) => {
-		console.log(e.target.value);
-		let { to } = this.state;
-		console.log({to})
-		let amount = e.target.value;
-		let output = calculateRate(amount, to);
-		console.log(output);
-		this.setState({ amount: e.target.value, output: output });
-	};
-
-	selectFromChange = (e) => {
-		console.log(e.target.value);
-		let from = e.target.value;
-		console.log('BASE:',from)
-		let {to,amount} = this.state
-			axios
-				.get(`/?base=${from}`)
-				.then((response) => {
-					console.log('RESPONSE:',response.data.rates);
-					let a = response.data.rates
-					console.log('A',a)
-					this.setState({ from: from, rates: response.data.rates,output: update });
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-				
-				let update = calculateRate(amount, to);
-				console.log({update})
-				this.setState({
-				output: update,to:to
-			})
-	};
-
-	selectToChange = (e) => {
-		const { amount } = this.state;
-		let to = e.target.value;
-		console.log(to);
-		let update = calculateRate(amount, to);
-		this.setState({ to: to, output: update });
-	};
+		this.setState({ [e.target.name]: e.target.value }, () => {
+			let { rates, amount, from, to } = this.state;
+			let output = rates.EUR / rates[from] * rates[to]
+			this.setState({ output: output })
+		})
+	}
 
 	render() {
-		const { rates, to, from, output } = this.state;
-		console.log(from);
-		let { date } = this.state;
-		if (date) date = date.replace(/-/g, '/');
-
-		const orderedRates = Object.keys(rates).map((rateKey, i) => {
-			return (
-				<Option key={rateKey + i} value={rateKey}>
-					{rateKey}
-				</Option>
-			);
-		});
-		console.log(orderedRates);
-
-		const orderedToRates = Object.keys(rates).map((rateKey, i) => {
-			return (
-				<Option key={rateKey + i} value={rates[rateKey]}>
-					{rateKey}
-				</Option>
-			);
-		});
-
+		const { date, output } = this.state;
+		const coinsOptions = this.state.coinsType.map(coin => <option key={coin}>{coin}</option>)
 		return (
 			<>
 				<div className={styles.wholeThing}>
-					<div className={styles.right}>
-						<div className={styles.rightText}> Exchange </div>
-						<div className={styles.Date}>
-							<p>
-								{' '}
-								World bank rates <br /> Last update{' '}
-								<span style={{ color: 'red', fontWeight: 'bold' }}> {date} </span>{' '}
-							</p>
-						</div>
-					</div>
+					<RightImg styles={styles} date={date} />
 
 					<div className={styles.main}>
 						<h1 style={{ textAlign: 'center' }}>
@@ -120,6 +59,7 @@ class Home extends Component {
 						</h1>
 						<div className={styles.form}>
 							<input
+								name="amount"
 								className={styles.inputAmount}
 								id="standard-basic"
 								type="number"
@@ -130,15 +70,15 @@ class Home extends Component {
 
 							<div className={styles.Second}>
 								{/* <label> Choose Currency: </label> */}
-								<select onChange={this.selectFromChange} value={from}>
-									{orderedRates}
+								<select name="from" onChange={this.handleChange}>
+									{coinsOptions}
 								</select>
 							</div>
 
 							<div className={styles.Third}>
 								{/* <label>Choose Exchange Rate:</label> */}
-								<select className={styles.Secondselect} value={to} onChange={this.selectToChange}>
-									{orderedToRates}
+								<select name="to" onChange={this.handleChange} className={styles.Secondselect}>
+									{coinsOptions}
 								</select>
 							</div>
 
