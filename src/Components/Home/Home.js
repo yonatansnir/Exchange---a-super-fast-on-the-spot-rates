@@ -36,7 +36,7 @@ class Home extends Component {
 	handleChange = (e) => {
 		this.setState({ [e.target.name]: e.target.value }, () => {
 			let { rates, amount, from, to } = this.state;
-			let output = rates.EUR / rates[from] * rates[to]
+			let output = parseInt(amount) / rates[from] * rates[to]
 			this.setState({ output: output })
 		})
 	}
